@@ -1,6 +1,6 @@
 describe('Input form', () => {
    beforeEach(() => {
-    cy.visit('/')
+    cy.seedAndVisit([])
    }) 
 
 //    To test Input Text
@@ -9,7 +9,7 @@ describe('Input form', () => {
         .should('have.class', 'new-todo')
     })
 
-    it('accepts input',() => {
+    it('accepts input', () => {
         const typeText = 'welcome'
 
         cy.get('.new-todo')
@@ -24,7 +24,7 @@ describe('Input form', () => {
         })
 
         it('Adds a new todo on submit', () => {
-            const itemText ='Buy product'
+            const itemText ='Buy Milk'
             cy.route('POST', '/api/todos', {
                 name: itemText,
                 id:'1',
@@ -34,6 +34,7 @@ describe('Input form', () => {
             .type(itemText)
             .type('{enter}')
             .should('have.value', '')
+
             cy.get('.todo-list li')
             .should('have.length', 1)
             .and('contain', itemText)
