@@ -24,7 +24,7 @@ describe('Input form', () => {
         })
 
         it('Adds a new todo on submit', () => {
-            const itemText ='Buy Milk'
+            const itemText ='Buy Eggs'
             cy.route('POST', '/api/todos', {
                 name: itemText,
                 id:'1',
