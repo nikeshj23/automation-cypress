@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import TodoForm from './TodoForm'
 import TodoList from './TodoList'
 import Footer from './Footer'
-import {saveTodo , loadTodos} from '../lib/service'
+import {saveTodo , loadTodos, destroyTodo } from '../lib/service'
 
 
 export default class TodoApp extends Component {
@@ -16,17 +16,25 @@ export default class TodoApp extends Component {
     }
     this.handleNewTodoChange = this.handleNewTodoChange.bind(this)
     this.handleTodoSubmit = this.handleNewTodoSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount ()  {
     loadTodos()
     .then(({data}) => this.setState({todos: data}))
-    .catch(() => this.setState({error:true}))
+    .catch(() => this.setState({error: true}))
   }
 
  
   handleNewTodoChange (evt) {
     this.setState({currentTodo: evt.target.value})
+  }
+
+  handleDelete (id) {
+    destroyTodo(id)
+    .then(() => this.setState ({
+      todos: this.state.todos.filter(t => t.id !== id)
+    }))
   }
   handleNewTodoSubmit (evt) {
     evt.preventDefault()
@@ -40,6 +48,7 @@ export default class TodoApp extends Component {
   }
 
   render () {
+    const remaining =this.state.todos.filter(t => !t.isComplete).length
     return (
       <Router>
         <div>
@@ -52,9 +61,10 @@ export default class TodoApp extends Component {
             handleNewTodoChange={this.handleNewTodoChange}/>
           </header>
           <section className="main">
-            <TodoList todos={this.state.todos} />
+            <TodoList todos={this.state.todos}
+            handleDelete={this.handleDelete} />
           </section>
-          <Footer />
+          <Footer remaining = {remaining}/>
         </div>
       </Router>
     )
