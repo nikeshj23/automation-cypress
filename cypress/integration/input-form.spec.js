@@ -41,21 +41,22 @@ describe('Input form', () => {
         })
 
         // To test if we are getting error message
-        it('show an error message on a failed submisson', () => {
+        it('Shows an error message on a failed submission', () => {
             cy.route({
-                url: '/api/todos',
-                method:'POST',
-                satuts:500,
-                reponse: {}
+              url: '/api/todos',
+              method: 'POST',
+              status: 500,
+              response: {}
             })
+      
             cy.get('.new-todo')
-             .type('test{enter}')
-
-             cy.get('.todo-list li')
-             .should('not.exist')
-
-             cy.get('.error')
-             .should('be.visible')
+              .type('test{enter}')
+      
+            cy.get('.todo-list li')
+              .should('not.exist')
+      
+            cy.get('.error')
+              .should('be.visible')
+          })
         })
-    })
-})  
+      })
